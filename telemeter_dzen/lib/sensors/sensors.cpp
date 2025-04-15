@@ -557,29 +557,7 @@ bool sensorsEventHandlersRegister()
 }
 
 
-// -----------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------- Дисплей -------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------
-static void lcdInit()
-{
-  lcd.init();
-  lcd.clear();
-  lcd.setBacklight(true);
-  lcd.printpos(0, 0, CONFIG_LCD_MSG_LOADING);
-  lcd.printpos(0, 1, APP_VERSION);
-  // vTaskDelay(pdMS_TO_TICKS(5000));
-}
 
-static void lcdClear()
-{
-  lcd.clear();
-}
-
-    void sensorsInit() { 
-      // Инициализация дисплея 
-      lcdInit(); 
-    
-    }
 // -----------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------- Задача --------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------
@@ -823,31 +801,7 @@ void sensorsTaskExec(void *pvParameters)
   vTaskDelete(nullptr);
   espRestart(RR_UNKNOWN);
 
-  //дисплей!!!!
-  while (true) 
-  { 
-    // Чтение данных сенсора бойлера 
-    sensorBoiler.readData(); 
-    if (sensorBoiler.getStatus() == SENSOR_STATUS_OK) 
-    { 
-      float tempBoiler = sensorBoiler.getValue(false).filteredValue; 
-      rlog_i("BOILER", "Values raw: %.2f °С | out: %.2f °С | min: %.2f °С | max: %.2f °С", 
-      sensorBoiler.getValue(false).rawValue, tempBoiler, sensorBoiler.getExtremumsDaily(false).minValue.filteredValue, sensorBoiler.getExtremumsDaily(false).maxValue.filteredValue); 
-      // Обновление дисплея 
-      lcdClear(); 
-      lcd.printpos(0, 0, "Boiler:"); 
-      char buffer[16]; 
-      snprintf(buffer, sizeof(buffer), "%.2f C", tempBoiler); 
-      lcd.printpos(0, 1, buffer); 
-      } 
-      else 
-      { 
-        // Если данные сенсора недоступны, отображаем сообщение об ошибке 
-        lcdClear(); 
-        lcd.printpos(0, 0, "No Sensor"); 
-        } 
-vTaskDelay(2000 / portTICK_PERIOD_MS); // Задержка для обновления данных 
-} 
+  
 }
 
 bool sensorsTaskStart()

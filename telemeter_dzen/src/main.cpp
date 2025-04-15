@@ -140,9 +140,7 @@ extern "C" { void app_main(void)
   if (!wifiStart()) {
     ledSysBlinkOn(1, 100, 250);
 
-    // Инициализация дисплея lcdInit(); 
-    rloga_i("LCD инициализирован");
-     vTaskDelay(1);
+    
   };
 }
 }
